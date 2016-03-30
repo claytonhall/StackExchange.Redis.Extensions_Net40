@@ -19,20 +19,27 @@ namespace StackExchange.Redis.Extensions.MsgPack
 		{
 			serializers = new Dictionary<string, IMessagePackSerializer>();
 
-			// Get all types that implement T interface
-			var implementingTypes = System.Reflection.Assembly
-				.GetExecutingAssembly()
-				.DefinedTypes
+#if NETFX_45
+            // Get all types that implement T interface
+            var implementingTypes = System.Reflection.Assembly
+                .GetExecutingAssembly()
+                .DefinedTypes
 				.Where(t => t.ImplementedInterfaces.Contains(typeof(T)));
-
-			// Create serializer for each type and store it in dictionary
-			foreach (var type in implementingTypes)
+#else
+            // Get all types that implement T interface
+            var implementingTypes = System.Reflection.Assembly
+                .GetExecutingAssembly()
+                .GetTypes()
+                .Where(t => typeof(T).IsAssignableFrom(t));
+#endif
+            // Create serializer for each type and store it in dictionary
+            foreach (var type in implementingTypes)
 			{
 				var key = type.Name;
 				var value = MessagePackSerializer.Get(type, context);
 				serializers.Add(key, value);
 			}
-		}
+        }
 
 		protected override void PackToCore(Packer packer, T objectTree)
 		{
