@@ -34,9 +34,15 @@ namespace StackExchange.Redis.Extensions.Core.Extensions
 		/// <returns></returns>
 		public static Task ForEachAsync<T>(this IEnumerable<T> source, Func<T, Task> body)
 		{
-			return Task.WhenAll(
+#if NETFX_45
+            return Task.WhenAll(
 				from item in source
 				select Task.Run(() => body(item)));
-		}
+#else
+            return TaskEx.WhenAll(
+                from item in source
+                select TaskEx.Run(() => body(item)));
+#endif
+        }
 	}
 }

@@ -1484,8 +1484,13 @@ namespace StackExchange.Redis.Extensions.Core
         /// <returns></returns>
         public async Task<Dictionary<string, T>> HashScanAsync<T>(string hashKey, string pattern, int pageSize = 10, CommandFlags commandFlags = CommandFlags.None)
         {
+#if NETFX_45
             return (await Task.Run(() => Database.HashScan(hashKey, pattern, pageSize, commandFlags)))
                 .ToDictionary(x => x.Name.ToString(), x => Serializer.Deserialize<T>(x.Value));
+#else
+            return (await TaskEx.Run(() => Database.HashScan(hashKey, pattern, pageSize, commandFlags)))
+                .ToDictionary(x => x.Name.ToString(), x => Serializer.Deserialize<T>(x.Value));
+#endif
         }
     }
 }

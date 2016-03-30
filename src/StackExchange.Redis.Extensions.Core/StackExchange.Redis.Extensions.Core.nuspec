@@ -3,9 +3,9 @@
 	<metadata>
 		<id>StackExchange.Redis.Extensions.Core</id>
 		<title>StackExchange.Redis.Extensions.Core</title>
-		<version>$version$</version>
-		<authors>$author$</authors>
-		<owners>$author$</owners>
+		<version>1.3.2.0</version>
+		<authors>Ugo Lattanzi</authors>
+		<owners>Ugo Lattanzi</owners>
 		<licenseUrl>https://github.com/imperugo/StackExchange.Redis.Extensions/blob/master/LICENSE</licenseUrl>
 		<projectUrl>https://github.com/imperugo/StackExchange.Redis.Extensions</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -46,4 +46,8 @@
 			<dependency id="StackExchange.Redis" version="1.0.488" />
 		</dependencies>
 	</metadata>
+  <files>
+    <file src="bin\Release\StackExchange.Redis.Extensions.Core.dll" target="lib\net4.5"/>
+    <file src="..\StackExchange.Redis.Extensions.Core_Net40\bin\Release\StackExchange.Redis.Extensions.Core.dll" target="lib\net4.0"/>
+  </files>
 </package>
